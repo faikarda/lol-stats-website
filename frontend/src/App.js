@@ -3,6 +3,8 @@ import Navbar from './Navbar';
 import Champions from './Champions';
 import ChampionDetail from './ChampionDetail';
 import HomePage from './HomePage';
+import Register from './Register';    // Register'ı ekledik
+import Login from './Login';          // Eğer Login de varsa ekle
 import { useEffect, useState } from "react";
 
 function App() {
@@ -21,18 +23,8 @@ function App() {
         <Route path="/" element={<HomePage version={version} />} />
         <Route path="/champions" element={<Champions />} />
         <Route path="/champions/:id" element={<ChampionDetail />} />
-        <Route path="/register" element={
-          <div>
-            <h2>Kayıt Ol</h2>
-            <p>Kullanıcı kayıt formu burada olacak.</p>
-          </div>
-        } />
-        <Route path="/login" element={
-          <div>
-            <h2>Giriş Yap</h2>
-            <p>Kullanıcı giriş formu burada olacak..</p>
-          </div>
-        } />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
