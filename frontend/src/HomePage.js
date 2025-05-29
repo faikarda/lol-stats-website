@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import HeroSlider from './HeroSlider';
 
-function HomePage({ version }) {
+function HomePage({ version, currentUser }) {
   return (
     <div style={{
       textAlign: "center",
@@ -10,8 +10,14 @@ function HomePage({ version }) {
       color: "#fff",
       minHeight: "100vh"
     }}>
-      <h1 style={{fontSize: "2.5rem"}}>LoL Build Guide</h1>
-      <p style={{maxWidth: "700px", margin: "16px auto", fontSize: "1.2rem"}}>
+      <h1 style={{ fontSize: "2.5rem" }}>LoL Build Guide</h1>
+      {/* Kullanıcı giriş yaptıysa hoşgeldin mesajı */}
+      {currentUser && (
+        <h2 style={{ color: "#f6c90e", margin: "16px 0" }}>
+          Hoş geldin, {currentUser}! 🎉
+        </h2>
+      )}
+      <p style={{ maxWidth: "700px", margin: "16px auto", fontSize: "1.2rem" }}>
         Sitemizde League of Legends şampiyonlarının en iyi buildlerini, rünlerini ve rehberlerini bulabilirsin.
         Kayıt olarak favori buildlerini saklayabilir, yeni buildler ekleyebilir ve meta hakkında bilgi edinebilirsin!
       </p>

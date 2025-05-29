@@ -4,85 +4,152 @@ function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccess(true);
+    setError("");
+    setSuccess(false);
+    try {
+      const response = await fetch("http://localhost:5050/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccess(true);
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      setError("Sunucuya bağlanılamadı!");
+    }
   };
 
   return (
     <div style={{
-      maxWidth: 400,
-      margin: "40px auto",
-      background: "#232946",
-      padding: 32,
-      borderRadius: 14,
-      color: "#fff"
+      minHeight: "100vh",
+      width: "100vw",
+      background: `
+        linear-gradient(135deg, #232946cc 50%, #343759cc 100%),
+        url('https://wallpapers.com/images/high/stunning-league-of-legends-logo-942s55eoux26omnq.webp')
+      `,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
     }}>
-      <h2>Kayıt Ol</h2>
-      {success ? (
-        <p>Kayıt başarılı! Şimdi giriş yapabilirsin.</p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 16 }}>
-            <label>Kullanıcı Adı</label>
-            <input
-              type="text"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              required
-              style={{ width: "100%", padding: 8, marginTop: 4, borderRadius: 4, border: "none" }}
-            />
+      <div style={{
+        width: 400,
+        background: "rgba(40,48,88,0.96)",
+        borderRadius: 18,
+        boxShadow: "0 6px 36px 0 #4e54c880",
+        padding: 36,
+        color: "#fff"
+      }}>
+        <h2 style={{ textAlign: "center", marginBottom: 24, color: "#f6c90e" }}>Kayıt Ol</h2>
+        {success ? (
+          <div style={{ textAlign: "center", color: "#00ff99", fontWeight: "bold" }}>
+            Kayıt başarılı! Şimdi giriş yapabilirsin.
           </div>
-          <div style={{ marginBottom: 16 }}>
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              style={{ width: "100%", padding: 8, marginTop: 4, borderRadius: 4, border: "none" }}
-            />
-          </div>
-          <div style={{ marginBottom: 16 }}>
-            <label>Şifre</label>
-            <div style={{ display: "flex", alignItems: "center" }}>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ display: "block", marginBottom: 6 }}>Kullanıcı Adı</label>
               <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 required
-                style={{ flex: 1, padding: 8, marginTop: 4, borderRadius: 4, border: "none" }}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
                 style={{
-                  marginLeft: 8,
-                  padding: "4px 12px",
-                  borderRadius: 4,
-                  border: "none",
-                  background: "#888",
+                  width: "100%",
+                  padding: 12,
+                  borderRadius: 8,
+                  border: "1px solid #4e54c8",
+                  background: "#232946",
                   color: "#fff",
-                  cursor: "pointer",
-                  fontSize: 14
+                  outline: "none"
                 }}
-              >
-                {showPassword ? "Gizle" : "Göster"}
-              </button>
+              />
             </div>
-          </div>
-          <button type="submit" style={{
-            width: "100%", padding: 12,
-            background: "#4e54c8", color: "#fff",
-            border: "none", borderRadius: 8, fontWeight: "bold"
-          }}>
-            Kayıt Ol
-          </button>
-        </form>
-      )}
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ display: "block", marginBottom: 6 }}>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: 12,
+                  borderRadius: 8,
+                  border: "1px solid #4e54c8",
+                  background: "#232946",
+                  color: "#fff",
+                  outline: "none"
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ display: "block", marginBottom: 6 }}>Şifre</label>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  style={{
+                    flex: 1,
+                    padding: 12,
+                    borderRadius: 8,
+                    border: "1px solid #4e54c8",
+                    background: "#232946",
+                    color: "#fff",
+                    outline: "none"
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    marginLeft: 8,
+                    padding: "6px 14px",
+                    borderRadius: 6,
+                    border: "none",
+                    background: "#f6c90e",
+                    color: "#232946",
+                    cursor: "pointer",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {showPassword ? "Gizle" : "Göster"}
+                </button>
+              </div>
+            </div>
+            <button type="submit" style={{
+              width: "100%",
+              padding: 14,
+              background: "linear-gradient(90deg,#4e54c8,#8f94fb)",
+              color: "#fff",
+              border: "none",
+              borderRadius: 10,
+              fontWeight: "bold",
+              fontSize: "1.1rem",
+              marginTop: 8,
+              transition: "background 0.2s, transform 0.2s",
+              boxShadow: "0 2px 12px rgba(78,84,200,0.18)",
+              cursor: "pointer"
+            }}>
+              Kayıt Ol
+            </button>
+            {error && <div style={{ color: "#f55", marginTop: 16, textAlign: "center" }}>{error}</div>}
+          </form>
+        )}
+      </div>
     </div>
   );
 }
